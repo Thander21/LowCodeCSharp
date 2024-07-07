@@ -1,0 +1,4 @@
+D:\Documentos\LowCodeCSharp\obj\Debug\net8.0-windows\MainWindow.g.cs
+D:\Documentos\LowCodeCSharp\obj\Debug\net8.0-windows\App.g.cs
+D:\Documentos\LowCodeCSharp\obj\Debug\net8.0-windows\LowCodeCSharp_MarkupCompile.cache
+D:\Documentos\LowCodeCSharp\obj\Debug\net8.0-windows\LowCodeCSharp_MarkupCompile.lref
