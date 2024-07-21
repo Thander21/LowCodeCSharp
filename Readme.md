@@ -1,160 +1,83 @@
 
+#### Próximos Passos:
+     - Implementar VisualizerScreen: Implemente a funcionalidade de seleção de elementos, zoom, navegação e sincronização com o código no VisualizerScreen.
+     - Integrar com o Visual Studio Code: Adapte o código para funcionar como uma extensão do Visual Studio Code.
+
+
 #### Visualizador de Fluxo de Código C#
-Este projeto visa criar uma extensão para o Visual Studio Code que aprimora significativamente a experiência de desenvolvedores C# ao visualizar e compreender o fluxo de execução do código em forma de diagrama. A extensão será modular, com classes distintas para análise de código, geração de diagrama e visualização, proporcionando flexibilidade e facilidade de manutenção.
+    Este projeto visa criar uma extensão para o Visual Studio Code que aprimora significativamente a experiência de desenvolvedores C# ao visualizar e compreender o fluxo de execução do código em forma de diagrama. A extensão será modular, com classes distintas para análise de código, geração de diagrama e visualização, proporcionando flexibilidade e facilidade de manutenção.
 **Requisitos**
-- Conhecimento sólido em C# e .NET
-- Experiência com bibliotecas de análise de código C# (como Microsoft.CodeAnalysis)
-- Familiaridade com bibliotecas de gráficos (como System.Drawing ou GDI+)
-- Domínio da API do Visual Studio Code
-- Arquitetura Robusta e Modular
+     - Conhecimento sólido em C# e .NET
+     - Experiência com bibliotecas de análise de código C# (como Microsoft.CodeAnalysis)
+     - Familiaridade com bibliotecas de gráficos (como Microsoft.Msagl)
+     - Domínio da API do Visual Studio Code
+     - Arquitetura Robusta e Modular
 
 **O projeto será estruturado em três classes principais:**
 
-1. CodeAnalyzer (Analisador de Código):
-    - Responsável por analisar minuciosamente o código C#, extraindo informações essenciais sobre classes, métodos, condições, loops e outras estruturas de controle.
-    - Utiliza a biblioteca Microsoft.CodeAnalysis para criar a Abstract Syntax Tree (AST), representando a estrutura hierárquica do código.
-    - Extrai informações relevantes da AST, como nomes de classes, métodos, variáveis, tipos de dados, condições, loops e seus respectivos blocos de código.
-    - Cria objetos FlowNode para representar cada elemento do código, armazenando informações como nome, tipo, código associado e conexões com outros elementos.
-2. DiagramGenerator (Gerador de Diagrama):
-    - Transforma as informações extraídas pelo CodeAnalyzer em um diagrama de fluxo compreensível.
-    - Analisa os FlowNodes e suas conexões para determinar o fluxo de execução do código.
-    - Utiliza uma biblioteca de gráficos adequada (como System.Drawing ou GDI+) para renderizar o diagrama de fluxo com elementos visuais claros e intuitivos.
-    - Gera diferentes tipos de elementos no diagrama, como caixas para classes e métodos, setas para conexões de fluxo, diamantes para decisões (if-else), retângulos para loops (for, while) e outros elementos específicos para representar as estruturas de controle do código C#.
-    - Possibilita a personalização do diagrama, permitindo que o desenvolvedor ajuste cores, tamanhos, estilos de linhas e outros elementos visuais para melhor legibilidade.
-3. Visualizer (Visualizador):
-    - Integra o diagrama de fluxo gerado no editor do Visual Studio Code, proporcionando uma experiência visual integrada.
-    - Utiliza a API do Visual Studio Code para criar painéis, ferramentas e interfaces de interação com o diagrama.
-    - Permite ao desenvolvedor navegar pelo diagrama, ampliar, reduzir, selecionar elementos e visualizar informações detalhadas sobre cada parte do código.
-    - Oferece funcionalidades interativas, como destacar linhas de código no editor quando um elemento do diagrama é selecionado, e vice-versa.
-    - Possibilita a exportação do diagrama em diferentes formatos de imagem (como PNG, JPEG), permitindo o compartilhamento e documentação do código.
-    - Funcionalidades Avançadas
-        - Detecção de Dependências: Identifica as dependências entre classes e métodos, exibindo-as no diagrama para facilitar a compreensão da arquitetura do código.
-        - Análise de Complexidade: Calcula métricas de complexidade para cada método e bloco de código, indicando áreas que podem precisar de refatoração ou otimização.
-        - Depuração Interativa: Permite ao desenvolvedor definir pontos de interrupção no diagrama e acompanhar a execução do código passo a passo, facilitando a identificação de bugs e problemas lógicos.
-        - Geração de Código a partir do Diagrama: Funcionalidade opcional que permite gerar código C# a partir do diagrama de fluxo, automatizando a criação de código a partir de uma representação visual.
-        - Etapas de Desenvolvimento Detalhadas
-    - Análise de Código Aprimorada:
-        - Implementar algoritmos robustos para analisar a AST, extraindo informações precisas e completas sobre o código C#.
-        - Considerar todos os tipos de estruturas de controle (if-else, for, while, switch, try-catch, etc.) e suas nuances.
-        - Mapear corretamente as classes, métodos, variáveis e seus respectivos tipos de dados.
-        - Geração de Diagrama Precisa e Personalizável:
-    - Desenvolver algoritmos para gerar um diagrama de fluxo que represente fielmente o fluxo de execução do código, considerando todas as estruturas de controle e dependências.
-    - Utilizar uma biblioteca de gráficos adequada para criar elementos visuais claros, intuitivos e personalizáveis.
-    - Permitir que o desenvolvedor ajuste cores, tamanhos, estilos de linhas, fontes e outros elementos visuais para otimizar a legibilidade do diagrama.
+1. FlowNode: (Dados para organizar e montar a lista de fluxos)
+    **Função:** Representa um nó no diagrama de fluxo, armazenando informações sobre um elemento do código.
+    **Propriedades:**
+     - Name: Nome do nó (ex: nome da classe, método, variável).
+     - Type: Tipo do nó (definido pela enumeração FlowNodeType).
+        ***Enum:***
+            - Class: Representa uma classe C#.
+            - Method: Representa um método C#.
+            - If: Representa uma instrução "if".
+            - Else: Representa uma instrução "else".
+            - For: Representa um loop "for".
+            - While: Representa um loop "while".
+            - DoWhile: Representa um loop "do-while".
+            - Switch: Representa uma estrutura "switch".
+            - Case: Representa um caso dentro de um "switch".
+            - Assignment: Representa uma atribuição de valor a uma variável.
+            - Declaration: Representa a declaração de uma variável.
+            - Call: Representa uma chamada de método.
+            - Return: Representa uma instrução "return".
+            - Input: Representa uma entrada de dados.
+            - Output: Representa uma saída de dados.
+            - Comment: Representa um comentário no código.
+     - Code: Código associado ao nó (ex: código da classe, método, condição, loop).
+     - Connections: Lista de conexões com outros nós de fluxo (FlowConnection).
+    a.  **FlowNodeType:**
+            **Função:** Define os tipos de nós de fluxo que podem existir no diagrama.
+            **Como funciona:** É uma enumeração que define os tipos de elementos do código, como classes, métodos, condições, loops, etc.
+    b. **FlowConnection:**
+            **Função:** Representa uma conexão entre dois nós de fluxo, indicando a direção do fluxo de execução.
+            **Propriedades:**
+             - Source: Referência ao nó de origem da conexão (FlowNode).
+             - Target: Referência ao nó de destino da conexão (FlowNode).
 
 
-#### Projeto de Classes para Visualizador de Fluxo de Código C#
-**CodeAnalyzer:**
-Analisa o código C# e extrai informações sobre classes, métodos, condições, loops e outras estruturas de controle
-*Função:* 
-- Analisar o código C# e extrair informações sobre a estrutura e elementos do código.
-*Métodos:*
-- Analyze(string filePath):
-- Recebe o caminho do arquivo C# como entrada.
-- Utiliza a biblioteca Microsoft.CodeAnalysis para analisar o código e criar abstract Syntax Tree (AST).
-- Percorre a AST e extrai informações sobre classes, métodos, condições, loops e outras estruturas de controle.
-- Cria objetos FlowNode para representar cada elemento do código, armazenando informações como nome, tipo, código associado e conexões com outros elementos.
-- Retorna uma lista de FlowNodes que representam a estrutura do código analisado.
-
-**FlowNode:**
-Representa um nó no diagrama de fluxo, com propriedades para nome, tipo, código associado e conexões com outros nós.
-*Função:*
-- Representar um nó no diagrama de fluxo.
-*Propriedades:*
-- Name: Nome do nó (ex: nome da classe, método, variável).
-- Type: Tipo do nó (FlowNodeType).
-- Code: Código associado ao nó (ex: código da classe, método, condição, loop).
-- Connections: Lista de conexões com outros nós de fluxo (FlowConnection).
-
-**FlowNodeType:**
-Define os tipos de nós de fluxo (ex: Class, Method, If, For, While, etc.).
-*Função:*
-- Definir os tipos de nós de fluxo que podem existir no diagrama.
-*Enum:*
-- Class: Representa uma classe C#.
-- Method: Representa um método C#.
-- If: Representa uma instrução "if".
-- Else: Representa uma instrução "else".
-- For: Representa um loop "for".
-- While: Representa um loop "while".
-- DoWhile: Representa um loop "do-while".
-- Switch: Representa uma estrutura "switch".
-- Case: Representa um caso dentro de um "switch".
-- Assignment: Representa uma atribuição de valor a uma variável.
-- Declaration: Representa a declaração de uma variável.
-- Call: Representa uma chamada de método.
-- Return: Representa uma instrução "return".
-- Input: Representa uma entrada de dados.
-- Output: Representa uma saída de dados.
-- Comment: Representa um comentário no código.
-
-**FlowConnection:**
-Representa uma conexão entre dois nós de fluxo, com propriedades para o nó de origem e o nó de destino.
-*Função:* 
-- Representar uma conexão entre dois nós de fluxo, indicando a direção do fluxo de execução.
-*Propriedades:*
-- Source: Referência ao nó de origem da conexão (FlowNode).
-- Target: Referência ao nó de destino da conexão (FlowNode).
-
-**DiagramGenerator:**
-Gera o diagrama de fluxo a partir dos nós e conexões extraídos pelo CodeAnalyzer.
-*Função:*
-- Gerar o diagrama de fluxo a partir dos nós e conexões extraídos pelo CodeAnalyzer.
-*Métodos:*
-- GenerateDiagram(List<FlowNode> flowNodes):
-- Recebe a lista de FlowNodes como entrada.
-- Utiliza as informações dos FlowNodes e FlowConnections para criar um modelo de grafo que represente o fluxo de execução do código.
-- Emprega uma biblioteca de gráficos (ex: System.Drawing, GDI+, Microsoft.Msagl) para renderizar o modelo de grafo em um diagrama de fluxo visual.
-- Retorna o diagrama de fluxo gerado.
-
-**Visualizer:**
-Integra o diagrama de fluxo no editor do Visual Studio Code e permite interação com o usuário.
-*Função:*
-- Integrar o diagrama de fluxo no editor do Visual Studio Code e permitir interação com o usuário.
-*Métodos:*
-- DisplayDiagram(Diagram diagram):
-- Recebe o diagrama de fluxo gerado como entrada.
-- Utiliza a API do Visual Studio Code para criar um painel no editor onde o diagrama será exibido.
-1. Interação com o Diagrama:
-    - Seleção de Elementos: Implementar a funcionalidade para que o usuário possa selecionar elementos no diagrama com o mouse ou teclado. Ao selecionar um elemento, destacar o elemento no diagrama e exibir informações detalhadas sobre o elemento em um painel lateral.
-    - Zoom e Navegação: Permitir que o usuário amplie, reduza e navegue pelo diagrama utilizando ferramentas de zoom e navegação.
-    - Filtros: Implementar filtros para que o usuário possa ocultar ou mostrar tipos específicos de elementos no diagrama (ex: classes, métodos, condições, loops).
-    - Pesquisa: Implementar uma funcionalidade de pesquisa para que o usuário possa encontrar rapidamente elementos específicos no diagrama.
-2. Integração com o Editor:
-    - Sincronização com o Código: Sincronizar o diagrama com o código no editor, destacando as linhas de código correspondentes aos elementos selecionados no diagrama.
-    - Pontos de Interrupção: Permitir que o usuário defina pontos de interrupção no diagrama clicando em elementos específicos. Ao atingir um ponto de interrupção, a execução do código deve ser pausada e o ponto de interrupção deve ser destacado no diagrama.
-    - Depuração Passo a Passo: Implementar a funcionalidade de depuração passo a passo, permitindo que o usuário avance linha a linha pelo código e visualize as mudanças no diagrama a cada passo.
-3. Personalização:
-    - Opções de Visualização: Oferecer opções de personalização para o diagrama, como cores, estilos de linhas, tamanhos de fontes, etc.
-    - Layouts Alternativos: Permitir que o usuário escolha diferentes layouts para o diagrama (ex: horizontal, vertical, radial).
-    - Exportação: Implementar a funcionalidade de exportar o diagrama em diferentes formatos de imagem (ex: PNG, JPEG, SVG).
-
-**EventManager:**
-*Função:* 
-- Centralizar o tratamento de eventos relacionados à interação do usuário com o diagrama de fluxo.
-*Benefícios:*
-- Maior organização e modularidade do código.
-- Facilita a implementação de novas funcionalidades de interação.
-- Reduz a duplicação de código.
-
-**EventManager:**
-*Função:*
-- Salvar e carregar o estado do diagrama de fluxo (ex: zoom, filtros, seleção de elementos).
-*Benefícios:*
-- Permite que o usuário reabra o diagrama com o mesmo estado anterior.
-- Facilita a colaboração entre desenvolvedores.
-
-#### PRÓXIMOS PASSOS:
-**Implementar a Lógica de Geração de Diagrama:**
-- No DiagramGenerator, implementar a lógica para criar as conexões de fluxo com base na estrutura do código. Usar a AST para determinar quais métodos pertencem a quais classes e criar conexões entre eles.
-
-**Implementar a Lógica de Visualização:**
-- Implementar a lógica dentro da classe Visualizer para renderizar o diagrama de fluxo usando uma biblioteca de gráficos.
-
-**Criar a Extensão do VS Code:**
-- Criar uma extensão do VS Code que use as classes CodeAnalyzer, DiagramGenerator e - Visualizer para analisar o código, gerar o diagrama e exibi-lo no editor.
+2. AnalyzerCode (Analisador de Código):
+    **Função:** Responsável por analisar minuciosamente o código C# e extrair informações essenciais sobre sua estrutura, classes, métodos, condições e elementos e monta conforme a organização em FlowNode
+    **Como funciona:**
+     - Utiliza a biblioteca Microsoft.CodeAnalysis para criar a Abstract Syntax Tree (AST), que representa a estrutura hierárquica do código de cada arquivo do projeto.
+     - Percorre a AST e extrai informações como nomes de classes, métodos, variáveis, tipos de dados, condições, loops e seus respectivos blocos de código.
+     - Cria objetos FlowNode para representar cada elemento do código, armazenando informações como nome, tipo, código associado e conexões com outros elementos.
+    **Saída:** Retorna uma lista de FlowNode que representam a estrutura do código analisado.
 
 
+3. DiagramGenerator: (gera o diagrama de fluxo e suas conexões)
+    **Função:** Transforma as informações extraídas pelo CodeAnalyzer em um diagrama de fluxo compreensível.
+    **Como funciona:**
+     - Analisa os FlowNode e suas conexões para determinar o fluxo de execução do código.
+     - Utiliza uma biblioteca de gráficos Microsoft.Msagl para renderizar o diagrama de fluxo com elementos visuais claros e intuitivos.
+     - Gera diferentes tipos de elementos no diagrama, como caixas para classes e métodos, setas para conexões de fluxo, diamantes para decisões (if-else), retângulos para loops (for, while) e outros elementos específicos para representar as estruturas de controle do código C#.
+     - Possibilita a personalização do diagrama, permitindo que o desenvolvedor ajuste cores, tamanhos, estilos de linhas e outros elementos visuais para melhor legibilidade.
+    **Saída:** Retorna o diagrama de fluxo gerado.
+
+
+4. Visualizer: (gera a tela de interação com o usuario)
+    **Função:** Integra o diagrama de fluxo gerado no editor do Visual Studio Code, proporcionando uma experiência visual integrada.
+    **Como funciona:**
+     - Utiliza a API do Visual Studio Code para criar painéis, ferramentas e interfaces de interação com o diagrama.
+     - Permite ao desenvolvedor navegar pelo diagrama, ampliar, reduzir, selecionar elementos e visualizar informações detalhadas sobre cada parte do código.
+     - Seleção de Elementos: Implementar a funcionalidade para que o usuário possa selecionar elementos no diagrama com o mouse ou teclado. Ao selecionar um elemento, destacar o elemento no diagrama e exibir informações do texto do elemento em um painel lateral.
+     - Zoom e Navegação: Permitir que o usuário amplie, reduza e navegue pelo diagrama utilizando ferramentas de zoom e navegação.
+     - Sincronização com o Código: Sincronizar o diagrama com o código no editor, destacando as linhas de código correspondentes aos elementos selecionados no diagrama.
+    
+   
 #### OBSERVAÇÕES:
 **Modularidade e Documentação:**
 - Modularidade: O projeto deve ser organizado em módulos distintos com interfaces bem definidas para promover a coesão, o baixo acoplamento e a facilidade de manutenção. Cada módulo deve ter uma responsabilidade específica (ex: análise de código, geração de diagrama, visualização) e deve interagir com outros módulos através de interfaces.
@@ -205,6 +128,61 @@ Imagine ter uma ferramenta poderosa que transforma seu código em um diagrama vi
 **Junte-se à Revolução da Compreensão do Código!**
 - O Visualizador de Fluxo de Código C# é mais do que apenas uma ferramenta; é um portal para um mundo de novas possibilidades na criação de software. Adote essa tecnologia inovadora e desvende a magia do seu código hoje mesmo!
 
+
+99. Funcionalidades Avançadas (versão 2, ignorar no projeto atual)
+        - Detecção de Dependências: Identifica as dependências entre classes e métodos, exibindo-as no diagrama para facilitar a compreensão da arquitetura do código.
+        - Análise de Complexidade: Calcula métricas de complexidade para cada método e bloco de código, indicando áreas que podem precisar de refatoração ou otimização.
+        - Depuração Interativa: Permite ao desenvolvedor definir pontos de interrupção no diagrama e acompanhar a execução do código passo a passo, facilitando a identificação de bugs e problemas lógicos.
+        - Geração de Código a partir do Diagrama: Funcionalidade opcional que permite gerar código C# a partir do diagrama de fluxo, automatizando a criação de código a partir de uma representação visual.
+        - Etapas de Desenvolvimento Detalhadas
+    - Análise de Código Aprimorada:
+        - Implementar algoritmos robustos para analisar a AST, extraindo informações precisas e completas sobre o código C#.
+        - Considerar todos os tipos de estruturas de controle (if-else, for, while, switch, try-catch, etc.) e suas nuances.
+        - Mapear corretamente as classes, métodos, variáveis e seus respectivos tipos de dados.
+        - Geração de Diagrama Precisa e Personalizável:
+    - Desenvolver algoritmos para gerar um diagrama de fluxo que represente fielmente o fluxo de execução do código, considerando todas as estruturas de controle e dependências.
+    - Utilizar uma biblioteca de gráficos adequada para criar elementos visuais claros, intuitivos e personalizáveis.
+    - Permitir que o desenvolvedor ajuste cores, tamanhos, estilos de linhas, fontes e outros elementos visuais para otimizar a legibilidade do diagrama.
+
+ a. Interação com o Diagrama:
+        - Oferece funcionalidades interativas, como destacar linhas de código no editor quando um elemento do diagrama é selecionado, e vice-versa.
+        - Filtros: Implementar filtros para que o usuário possa ocultar ou mostrar tipos específicos de elementos no diagrama (ex: classes, métodos, condições, loops).
+        - Pesquisa: Implementar uma funcionalidade de pesquisa para que o usuário possa encontrar rapidamente elementos específicos no diagrama.
+    b. Integração com o Editor:
+        - Pontos de Interrupção: Permitir que o usuário defina pontos de interrupção no diagrama clicando em elementos específicos. Ao atingir um ponto de interrupção, a execução do código deve ser pausada e o ponto de interrupção deve ser destacado no diagrama.
+        - Depuração Passo a Passo: Implementar a funcionalidade de depuração passo a passo, permitindo que o usuário avance linha a linha pelo código e visualize as mudanças no diagrama a cada passo.
+    c. Personalização:
+        - Opções de Visualização: Oferecer opções de personalização para o diagrama, como cores, estilos de linhas, tamanhos de fontes, etc.
+        - Layouts Alternativos: Permitir que o usuário escolha diferentes layouts para o diagrama (ex: horizontal, vertical, radial).
+        - Possibilita a exportação do diagrama em diferentes formatos de imagem (como PNG, JPEG), permitindo o compartilhamento e documentação do código.
+
+
+5. EventManager:
+    **Função:** Centraliza o tratamento de eventos relacionados à interação do usuário com o diagrama de fluxo.
+    *Função:*
+- Salvar e carregar o estado do diagrama de fluxo (ex: zoom, filtros, seleção de elementos).
+*Benefícios:*
+- Permite que o usuário reabra o diagrama com o mesmo estado anterior.
+- Facilita a colaboração entre desenvolvedores.
+    **Benefícios:**
+     - Maior organização e modularidade do código.
+     - Facilita a implementação de novas funcionalidades de interação.
+     - Reduz a duplicação de código.
+
+6. StateManager:
+    **Função:** Salva e carrega o estado do diagrama de fluxo (ex: zoom, filtros, seleção de elementos).
+**Benefícios:**
+     - Permite que o usuário reabra o diagrama com o mesmo estado anterior.
+     - Facilita a colaboração entre desenvolvedores.
+**Organização da Arquitetura:**
+     - Camadas: O projeto pode ser organizado em camadas para melhor separação de responsabilidades:
+     - Camada de Análise: Contém a classe CodeAnalyzer.
+     - Camada de Modelo: Contém as classes FlowNode, FlowNodeType e FlowConnection.
+     - Camada de Geração: Contém a classe DiagramGenerator.
+     - Camada de Visualização: Contém a classe Visualizer.
+     - Camada de Interação: Contém as classes EventManager e StateManager.
+    **Interfaces:** As classes podem implementar interfaces para definir contratos e facilitar a troca de informações entre as camadas.
+    **Testes:** É importante escrever testes unitários para cada classe para garantir a qualidade do código e a funcionalidade correta do projeto.
 
 ###### FONTES SUGERIDAS:
 **Microsoft.CodeAnalysis:**

@@ -6,6 +6,16 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ProjectName>LowCodeCSharp</ProjectName>
+    <ProjectGuid>{A1B2C3D4-E5F6-7890-1234-567890ABCDEF}</ProjectGuid>
+
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Msagl" Version="1.1.6" />
+    <PackageReference Include="Microsoft.Msagl.Drawing" Version="1.1.6" />
+    <PackageReference Include="Microsoft.Msagl.GraphViewerGdi" Version="1.1.7" />
+  </ItemGroup>
 
 </Project>
