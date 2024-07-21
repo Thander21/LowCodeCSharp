@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Msagl.Drawing;
 using Microsoft.Msagl.GraphViewerGdi;
 using System.Windows.Forms;
-using LowCodeCSharp.Flow;
+using Flow;
 
-namespace LowCodeCSharp.Visualizer
+namespace Visualizer
 {
     public class VisualizerScreen
     {

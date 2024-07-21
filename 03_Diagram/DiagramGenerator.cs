@@ -1,57 +1,101 @@
-using System;
-using System.Collections.Generic;
+using Analyzer;
+using Flow;
+using LowCodeCSharp;
 using Microsoft.Msagl.Drawing;
 using Microsoft.Msagl.GraphViewerGdi;
+using System.Drawing;
 using System.Windows.Forms;
-using LowCodeCSharp.Flow;
 
-namespace LowCodeCSharp.Diagram
+namespace Diagram
 {
-    public class DiagramGenerator
+    public class VisualizerScreen : Form
     {
-        private readonly List<FlowNode> _nodes;
-        private readonly List<FlowConnection> _connections;
+        private GViewer? viewer;
+        private List<FlowNode>? flowNodes;
+        private List<FlowConnection>? flowConnections;
 
-        public DiagramGenerator(List<FlowNode> nodes, List<FlowConnection> connections)
+        public List<FlowNode>? FlowNodes { get => flowNodes; set => flowNodes = value; }
+
+        public VisualizerScreen(List<FlowConnection>? flowConnections)
         {
-            _nodes = nodes;
-            _connections = connections;
+            this.flowConnections = flowConnections;
         }
 
-        public void GenerateDiagram()
+        public VisualizerScreen()
+        {
+            InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            // Inicializa os componentes da tela
+            this.SuspendLayout();
+
+            // Cria o visualizador do diagrama
+            viewer = new GViewer();
+            viewer.Dock = DockStyle.Fill;
+            this.Controls.Add(viewer);
+
+            // Define o tamanho da tela
+            this.ClientSize = new Size(800, 600);
+
+            // Define o título da tela
+            this.Text = "Visualizador de Código";
+
+            // Define o layout da tela
+            this.ResumeLayout(false);
+        }
+
+        // Método para carregar o código C# e gerar o diagrama
+        public void LoadCode(string filePath)
+        {
+            // Analisa o código e gera os nós de fluxo
+            var flowNodes = AnalyzerCode.Analyze(filePath);
+
+            // Gera as conexões de fluxo
+            var flowConnections = LowCodeCSharpCommunication.GenerateFlowConnections(flowNodes);
+
+            // Gera o diagrama de fluxo
+            GenerateDiagram();
+        }
+
+        // Método para gerar o diagrama de fluxo
+        private void GenerateDiagram()
         {
             // Cria um novo grafo Msagl
             var graph = new Graph();
-
+            foreach (var (node, msaglNode) in
             // Adiciona os nós ao grafo
-            foreach (var node in _nodes)
+            from node in flowNodes
+            let msaglNode = graph.AddNode(node.Name)
+            select (node, msaglNode))
             {
-                var msaglNode = graph.AddNode(node.Name);
-                msaglNode.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Box; // Qualifique o namespace para Shape
+                msaglNode.Attr.Shape = Shape.Box;
                 msaglNode.LabelText = node.Name;
             }
 
+            foreach (var (sourceNode, targetNode) in
             // Adiciona as conexões ao grafo
-            foreach (var connection in _connections)
+            from connection in flowConnections
+            let sourceNode = graph.FindNode(connection.Source.Name)
+            let targetNode = graph.FindNode(connection.Target.Name)
+            where sourceNode != null && targetNode != null
+            select (sourceNode, targetNode))
             {
-                var sourceNode = graph.FindNode(connection.Source.Name);
-                var targetNode = graph.FindNode(connection.Target.Name);
-                graph.AddEdge(sourceNode.Id, targetNode.Id); // Use os IDs dos nós
+                graph.AddEdge(sourceNode.Id, targetNode.Id);
             }
 
-            // Cria um visualizador Msagl
-            var viewer = new GViewer();
-            viewer.Graph = graph;
 
-            // Configuração do layout (omitido EdgeRoutingSettings se não estiver disponível)
-            // viewer.Graph.Attr.EdgeRoutingSettings.EdgeRoutingMode = Microsoft.Msagl.Routing.EdgeRoutingMode.Spline; // Corrigido
+            // Configura o visualizador do diagrama
+            if (viewer != null)
+            {
+                viewer.Graph = graph;
+            }
+        }
 
-            viewer.Graph.LayoutAlgorithmSettings.NodeSeparation = 10;
-
-            // Exibe o visualizador
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form { Controls = { viewer } });
+        internal void ShowDiagram(List<FlowNode> flowNodes, List<FlowConnection> flowConnections)
+        {
+            throw new NotImplementedException();
         }
     }
 }

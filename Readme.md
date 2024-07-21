@@ -1,7 +1,32 @@
 
 #### Próximos Passos:
-     - Implementar VisualizerScreen: Implemente a funcionalidade de seleção de elementos, zoom, navegação e sincronização com o código no VisualizerScreen.
-     - Integrar com o Visual Studio Code: Adapte o código para funcionar como uma extensão do Visual Studio Code.
+1. Adaptar o código para funcionar como uma extensão do VS Code:
+    crear extensão
+
+2. Ler o projeto aberto no VS Code:
+    A classe AnalyzerCode deve ser modificada para receber uma lista de arquivos como parâmetro e analisar cada arquivo individualmente.
+    A classe DiagramGenerator deve ser modificada para gerar o diagrama de fluxo a partir dos nós de fluxo.
+    A classe Visualizer deve ser modificada para exibir o diagrama de fluxo em um painel dentro do VS Code.
+    Você precisará instalar as dependências necessárias para a extensão, como typescript e vscode-extension-quickstart.
+    Você precisará configurar o VS Code para compilar e empacotar a extensão.
+    Utilizar a API do VS Code: Utilize a API do VS Code para obter o caminho da pasta do projeto aberto.
+    Obter os arquivos do projeto: Utilize a API do VS Code para acessar os arquivos do projeto, incluindo os arquivos de código-fonte C#.
+
+3. Gerar os fluxos em tela:
+    Utilizar a classe AnalyzerCode: Utilize a classe AnalyzerCode para analisar os arquivos de código-fonte C# e gerar uma lista de nós de fluxo (FlowNode).
+    Utilizar a classe DiagramGenerator: Utilize a classe DiagramGenerator para gerar o diagrama de fluxo a partir dos nós de fluxo.
+    Utilizar a classe Visualizer: Utilize a classe Visualizer para exibir o diagrama de fluxo gerado em um painel dentro do VS Code.
+
+4. Executar o projeto C# e a extensão:
+    Execute o projeto de console C# LowCodeCSharpConsole.
+    Execute a extensão do VS Code.
+    Clique no comando "Analisar Projeto" na extensão.
+    Observações:
+
+    A extensão em TypeScript irá executar o projeto de console C# e receber os dados do diagrama em formato JSON.
+    Você precisará implementar a lógica para criar a tela do diagrama na função createDiagramScreen da extensão.
+    Certifique-se de que os caminhos dos arquivos e projetos estão corretos no código.
+    Você pode usar bibliote
 
 
 #### Visualizador de Fluxo de Código C#

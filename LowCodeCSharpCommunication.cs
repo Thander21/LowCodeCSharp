@@ -1,9 +1,29 @@
 using Flow;
+using Analyzer;
+using System.Text.Json;
+using Microsoft.Msagl.Drawing;
 
 namespace LowCodeCSharp
 {
-    public class LowCodeCSharp
+    public class LowCodeCSharpCommunication
     {
+        // Método para analisar o código C# e gerar os dados do diagrama
+        public static string AnalyzeCode(string filePath)
+        {
+            // Analisa o código e gera os nós de fluxo
+            List<FlowNode> flowNodes = AnalyzerCode.Analyze(filePath);
+
+            // Gera as conexões de fluxo
+            List<FlowConnection> flowConnections = GenerateFlowConnections(flowNodes);
+
+            // Gera o diagrama de fluxo
+            DiagramGenerator diagramGenerator = new(flowNodes, flowConnections);
+            diagramGenerator.GenerateDiagram();
+
+            // Retorna os dados do diagrama em formato JSON
+            return DiagramGenerator.SerializeDiagram(flowNodes, flowConnections);
+        }
+
         // Método para gerar as conexões de fluxo
         public static List<FlowConnection> GenerateFlowConnections(List<FlowNode> flowNodes)
         {
@@ -144,6 +164,72 @@ namespace LowCodeCSharp
             }
 
             return flowConnections;
+        }
+    }
+
+    internal class DiagramGenerator
+    {
+        private List<FlowNode> flowNodes;
+        private List<FlowConnection> flowConnections;
+
+        public DiagramGenerator(List<FlowNode> flowNodes, List<FlowConnection> flowConnections)
+        {
+            this.flowNodes = flowNodes;
+            this.flowConnections = flowConnections;
+        }
+
+        internal static string SerializeDiagram(List<FlowNode> flowNodes, List<FlowConnection> flowConnections)
+        {
+            // Cria um objeto JSON para armazenar os dados do diagrama
+            var diagramData = new
+            {
+                Nodes = flowNodes.Select(n => new
+                {
+                    Name = n.Name,
+                    Type = n.Type,
+                    Code = n.Code,
+                    LineNumber = n.LineNumber
+                }),
+                Connections = flowConnections.Select(c => new
+                {
+                    Source = c.Source.Name,
+                    Target = c.Target.Name
+                })
+            };
+
+            // Serializa o objeto JSON para uma string
+            string jsonData = JsonSerializer.Serialize(diagramData);
+
+            return jsonData;
+        }
+
+        internal void GenerateDiagram()
+        {
+            // Cria um novo grafo Msagl
+            var graph = new Graph();
+
+            // Adiciona os nós ao grafo
+            foreach (var node in flowNodes)
+            {
+                var msaglNode = graph.AddNode(node.Name);
+                msaglNode.Attr.Shape = Shape.Box;
+                msaglNode.LabelText = node.Name;
+            }
+
+            // Adiciona as conexões ao grafo
+            foreach (var connection in flowConnections)
+            {
+                var sourceNode = graph.FindNode(connection.Source.Name);
+                var targetNode = graph.FindNode(connection.Target.Name);
+                if (sourceNode != null && targetNode != null)
+                {
+                    graph.AddEdge(sourceNode.Id, targetNode.Id);
+                }
+            }
+
+            // Configura o visualizador do diagrama
+            Visualizer.VisualizerScreen visualizer = new();
+            visualizer.ShowDiagram(flowNodes, flowConnections);
         }
     }
 }

@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+	  "module": "commonjs",
+	  "target": "esnext",
+	  "outDir": "out",
+	  "rootDir": "src", // Certifique-se que o rootDir está definido como "src"
+	  "strict": true,
+	  "esModuleInterop": true,
+	  "skipLibCheck": true,
+	  "forceConsistentCasingInFileNames": true
+	},
+	"include": [
+	  "src/**/*" // Inclua o diretório "src"
+	]
+  }
