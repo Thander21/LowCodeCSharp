@@ -1,7 +1,10 @@
 
 #### Próximos Passos:
-1. Adaptar o código para funcionar como uma extensão do VS Code:
-    crear extensão
+sta abordagem permite que você visualize o diagrama diretamente no VS Code durante o desenvolvimento.
+Recomendação:
+Considerando a estrutura atual do seu projeto, eu recomendaria começar focando no desenvolvimento e teste da lógica principal no projeto de console C#. Uma vez que você tenha a geração do diagrama funcionando corretamente, você pode passar para a implementação da visualização usando uma página HTML simples com D3.js ou GoJS.
+Depois disso, você pode integrar essa visualização à extensão do VS Code usando Webviews. Esta abordagem gradual permitirá que você teste e refine cada componente do sistema separadamente antes de integrá-los completamente na extensão do VS Code.
+
 
 2. Ler o projeto aberto no VS Code:
     A classe AnalyzerCode deve ser modificada para receber uma lista de arquivos como parâmetro e analisar cada arquivo individualmente.
@@ -26,7 +29,7 @@
     A extensão em TypeScript irá executar o projeto de console C# e receber os dados do diagrama em formato JSON.
     Você precisará implementar a lógica para criar a tela do diagrama na função createDiagramScreen da extensão.
     Certifique-se de que os caminhos dos arquivos e projetos estão corretos no código.
-    Você pode usar bibliote
+    Você pode usar bibliotecas como D3.js, GoJS ou Graphviz para criar diagramas de fluxo interativos e personalizáveis.
 
 
 #### Visualizador de Fluxo de Código C#
