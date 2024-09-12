@@ -2,7 +2,7 @@
 	"compilerOptions": {
 	  "module": "commonjs",
 	  "target": "esnext",
-	  "outDir": "out",
+	  "outDir": "out", // Certifique-se que o outDir está definido como "out"
 	  "rootDir": "src", // Certifique-se que o rootDir está definido como "src"
 	  "strict": true,
 	  "esModuleInterop": true,
@@ -13,3 +13,4 @@
 	  "src/**/*" // Inclua o diretório "src"
 	]
   }
+  

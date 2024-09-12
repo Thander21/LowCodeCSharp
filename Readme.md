@@ -1,7 +1,6 @@
 
 #### Próximos Passos:
-1. Adaptar o código para funcionar como uma extensão do VS Code:
-    crear extensão
+
 
 2. Ler o projeto aberto no VS Code:
     A classe AnalyzerCode deve ser modificada para receber uma lista de arquivos como parâmetro e analisar cada arquivo individualmente.
