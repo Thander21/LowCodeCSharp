@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context) {
     let disposable = vscode.commands.registerCommand('extension.showDiagram', () => {
         const panel = vscode.window.createWebviewPanel(
             'diagramView',
