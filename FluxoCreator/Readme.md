@@ -1,9 +1,12 @@
 
 #### Próximos Passos:
+<<<<<<< HEAD:FluxoCreator/Readme.md
 sta abordagem permite que você visualize o diagrama diretamente no VS Code durante o desenvolvimento.
 Recomendação:
 Considerando a estrutura atual do seu projeto, eu recomendaria começar focando no desenvolvimento e teste da lógica principal no projeto de console C#. Uma vez que você tenha a geração do diagrama funcionando corretamente, você pode passar para a implementação da visualização usando uma página HTML simples com D3.js ou GoJS.
 Depois disso, você pode integrar essa visualização à extensão do VS Code usando Webviews. Esta abordagem gradual permitirá que você teste e refine cada componente do sistema separadamente antes de integrá-los completamente na extensão do VS Code.
+=======
+>>>>>>> cbc5e6fde8e62d1768a6da0c40deec143e67b460:Readme.md
 
 
 2. Ler o projeto aberto no VS Code:
